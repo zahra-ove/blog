@@ -1,0 +1,7 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/" # Location of the composer.json file
+    schedule:
+      interval: "weekly" # How often to check for updates
+    open-pull-requests-limit: 10
