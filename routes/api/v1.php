@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function() {
-
-});
+Route::name('blog.api.')
+    ->prefix('v1')
+    ->namespace('\App\Http\Controllers\api\v1')
+    ->group(function () {
+        Route::apiResource('categories', 'CategoryController');
+    });

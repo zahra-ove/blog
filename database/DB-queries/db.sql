@@ -4,10 +4,16 @@ DROP TABLE IF EXISTS categories;
 CREATE TABLE IF NOT EXISTS categories (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255),
+    `slug` varchar(255),
+    category_id INT UNSIGNED,
 
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT NULL,
-    deleted_at TIMESTAMP NULL DEFAULT NULL
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+
+    UNIQUE KEY `categories_slug_uniq` (`slug`),
+    INDEX category_id_indx (category_id),
+    CONSTRAINT category_category_id_fk FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
 );
 
 DROP TABLE IF EXISTS tags;
