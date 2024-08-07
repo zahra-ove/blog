@@ -14,7 +14,7 @@ interface RepositoryInterface
     public function paginate(int $limit=20, array $columns = ['*'], array $relations = [], array $parameters = [], ?string $orderBy = null): LengthAwarePaginator;
 
 //    public function allTrashed(array $column = ['*']);
-    public function getBy(array $columns = ['*'], $parameters, array $relations = []): Collection;
+    public function getBy($parameters, array $columns = ['*'], array $relations = []): Collection;
     public function pluck(array $fields = ['id']);
     public function find($id, array $columns = ['*'], array $relations = []);
 

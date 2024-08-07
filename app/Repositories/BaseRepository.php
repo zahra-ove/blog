@@ -17,13 +17,8 @@ abstract class BaseRepository implements RepositoryInterface
     {
     }
 
-//    private Model|null $instance = null;
-
     public function all(array $columns = ['*'], array $relations = [], array $parameters = [], ?string $orderBy = null): Collection
     {
-//        $this->instance = $this->getNewInstance();
-
-//        $this->applyFilters($parameters);
         $this->applyOrderBy($orderBy);
 
         return $this->model
@@ -34,11 +29,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function paginate(int $limit=20, array $columns = ['*'], array $relations = [], array $parameters = [], ?string $orderBy = null): LengthAwarePaginator
     {
-//        $this->instance = $this->getNewInstance();
-
-//        $this->applyFilters($parameters);
-//        $this->applyOrderBy($orderBy);
-
         return $this->model
             ->with($relations)
             ->select($columns)
@@ -63,10 +53,8 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model;
     }
 
-    public function getBy(array $columns = ['*'], $parameters, array $relations = []): Collection
+    public function getBy($parameters, array $columns = ['*'], array $relations = []): Collection
     {
-//        $this->instance = $this->getNewInstance();
-
         foreach ($parameters as $field => $value) {
             $this->model->where($field, $value);
         }
@@ -79,8 +67,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function pluck(array $fields = ['id'])
     {
-//        $this->instance = $this->getNewInstance();
-
         return $this->model
             ->pluck(...$fields)
             ->all();
@@ -134,8 +120,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function store(array $data): Model
     {
-//        $this->instance = $this->getNewInstance();
-
         return $this->model->create($data);
     }
 

@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryStoreRequest;
-use App\Http\Requests\CategoryUpdateRequest;
+use App\Http\Requests\Api\V1\CategoryStoreRequest;
+use App\Http\Requests\Api\V1\CategoryUpdateRequest;
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
 use App\Repositories\contracts\CategoryRepositoryInterface;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class CategoryController extends Controller
+
+class CategoryController extends ApiController
 {
     public function __construct(protected CategoryService $categoryService, protected CategoryRepositoryInterface $categoryRepository)
     {
@@ -18,16 +20,20 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $categories = request()->filled('paginated')
-                        ? $this->categoryRepository->paginate()
-                        : $this->categoryRepository->all();
+        $categories = request()->has('paginated')
+            ? $this->categoryRepository->paginate(5)
+            : $this->categoryRepository->all();
 
-        return response()->json($categories, Response::HTTP_OK);
+        $resource = request()->has('paginated')
+            ? new CategoryCollection($categories)
+            : CategoryResource::collection($categories);
+
+        return response()->json($resource, Response::HTTP_OK);
     }
 
-    public function store(CategoryStoreRequest $request, $categoryRepository): JsonResponse
+    public function store(CategoryStoreRequest $request): JsonResponse
     {
-        $category = $this->categoryRepository->store($request->validate());
+        $category = $this->categoryService->store($request->validated());
         return response()->json($category, Response::HTTP_CREATED);
     }
 
